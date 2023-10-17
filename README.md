@@ -8,7 +8,8 @@ Or:
  - docker compose down
  - docker compose up --build
 in Windows
-
+<br />
+Application links:
  - http://localhost:3000/ - react client <br />
  - http://localhost:8080/swagger/ - swagger 
 
