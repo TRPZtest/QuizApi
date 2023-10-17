@@ -11,11 +11,11 @@ namespace QuizApi.Data.Db
 {
     public class UserRepository : IUserRepository
     {
-        private readonly TestingDbContext _context;
+        private readonly AppDbContext _context;
 
-        public UserRepository(TestingDbContext dbContext)
+        public UserRepository(AppDbContext dbContext)
         {
-            _context = dbContext;
+            _context = dbContext;         
         }
 
         public async Task<User?> GetUserAsync(string login, string password)

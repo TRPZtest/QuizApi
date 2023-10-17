@@ -11,9 +11,9 @@ namespace QuizApi.Data.Db
 {
     public class QuizRepository : IQuizRepository
     {
-        private readonly TestingDbContext _context;
+        private readonly AppDbContext _context;
 
-        public QuizRepository(TestingDbContext dbContext)
+        public QuizRepository(AppDbContext dbContext)
         {
             _context = dbContext;
         }

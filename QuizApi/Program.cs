@@ -29,8 +29,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-
-
 builder.Services.AddAutoMapper(typeof(AppAutoMapperProfile));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -87,11 +85,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddDbContext<TestingDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("testingDb")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("testingDb")));
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<AuthService>();
+
+
 
 
 var app = builder.Build();
@@ -107,5 +107,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors(MyAllowSpecificOrigins);
+
+if (builder.Environment.EnvironmentName == "Container")
+{
+    var context = app.Services.GetService(typeof(AppDbContext));
+
+    DbEnsureCreatedHelper.TryToSeedData((AppDbContext)context);
+}
+
+
 
 app.Run();

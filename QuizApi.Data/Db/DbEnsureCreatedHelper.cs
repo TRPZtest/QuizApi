@@ -1,39 +1,29 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using QuizApi.Data.Db.Enteties;
+﻿using QuizApi.Data.Db.Enteties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizApi.Tests.TestHelpers
+namespace QuizApi.Data.Db
 {
-    internal class TestDb
-    {
-        public AppDbContext GetDbContext()
+    public static class DbEnsureCreatedHelper
+    {       
+        public static void TryToSeedData(AppDbContext context) 
         {
-            var connection = new SqliteConnection("Filename=:memory:");
-            connection.Open();
+            if (context.Database.EnsureCreated())           
+                SeedData(context);                      
+        }
 
-            // These options will be used by the context instances in this test suite, including the connection opened above.
-            var contextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlite(connection)
-                .Options;
-
-            // Create the schema and seed some data
-            var context = new AppDbContext(contextOptions);
-
-            context.Database.EnsureCreated();
-
+        private static void SeedData(AppDbContext context) 
+        {
             var user1 = new User { Login = "user1", Password = "password" };
             var user2 = new User { Login = "user2", Password = "password" };
             // Insert data into the Users table
-           context.Users.AddRange(
-                user1,
-                user2
-            );
+            context.Users.AddRange(
+                 user1,
+                 user2
+             );
 
             context.SaveChanges();
 
@@ -84,11 +74,7 @@ namespace QuizApi.Tests.TestHelpers
             );
             context.SaveChanges();
 
-            
-
             context.ChangeTracker.Clear();
-
-            return context;
         }
     }
 }
