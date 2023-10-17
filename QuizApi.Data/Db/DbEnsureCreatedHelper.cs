@@ -10,13 +10,14 @@ namespace QuizApi.Data.Db
     public static class DbEnsureCreatedHelper
     {       
         public static void TryToSeedData(AppDbContext context) 
-        {
+        {     
             if (context.Database.EnsureCreated())           
                 SeedData(context);                      
         }
 
         private static void SeedData(AppDbContext context) 
         {
+            Console.WriteLine("Data seeding..");
             var user1 = new User { Login = "user1", Password = "password" };
             var user2 = new User { Login = "user2", Password = "password" };
             // Insert data into the Users table

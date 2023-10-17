@@ -12,8 +12,8 @@ namespace QuizApi.Data.Interfaces
         Task<Take?> GetTakeAsync(long userId, long quizId);             
         Task<Quiz> GetQuizAsync(long quizId);
         Task<Quiz> GetQuizByTakeIdAsync(long takeId);
-        Task<List<Quiz>> GetQuizzesAsync(long userId);
-        Task<Response[]> GetResponses(long takeId);
+        Task<List<Quiz>?> GetQuizzesAsync(long userId);
+        Task<Response[]> GetOldestResponses(long takeId);
         Task<Response[]> GetResponses(long takeId, long questionId);
         Task<Result?> GetResultAsync(long takeId);
         Task<List<Option>> GetOptions(long questionId);

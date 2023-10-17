@@ -45,7 +45,7 @@ namespace QuizApi.Tests
 
             var take = service.AddTakeAsync(quizId, user.Id);
 
-            var responses = correctOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id, QuestionId =  x.QuestionId })
+            var responses = correctOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id })
                 .ToArray();
 
             await service.AddResponsesAsync(responses);
@@ -80,7 +80,7 @@ namespace QuizApi.Tests
 
 
         [Fact]
-        public async Task TryToRewriteResponse()
+        public async Task ResultOnOldestResponsesOnly()
         {
             var testDb = new TestDb();
             var context = testDb.GetDbContext();
@@ -95,23 +95,20 @@ namespace QuizApi.Tests
             var take = await service.AddTakeAsync(quizId, user.Id);
         
             var correctOptions = context.Options.Where(x => x.IsCorrect == true && x.Question.QuizId == quizId).ToList(); //select correct answers
-            var correctResponses = correctOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id, QuestionId = x.QuestionId })
+            var correctResponses = correctOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id })
                 .ToArray();
 
             var randomOptions = context.Questions.Where(x => x.QuizId == quizId)
-                .Select(x => x.Options.First());
-            var randomResponses = randomOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id, QuestionId = x.QuestionId })
+                .Select(x => x.Options.First(x => x.IsCorrect != true));
+            var wrongResponses = randomOptions.Select(x => new Response { OptionId = x.Id, TakeId = take.Id })
                 .ToArray();
-         
-            Func<Task> actionThrows = async () =>
-            {
-                await service.AddResponsesAsync(randomResponses);
-                await service.AddResponsesAsync(correctResponses);
-            };
 
-            var ex = Assert.ThrowsAnyAsync<Exception>(actionThrows);
+            await service.AddResponsesAsync(correctResponses);
+            await service.AddResponsesAsync(wrongResponses);
 
-            Assert.Contains("UNIQUE", ex.Result?.InnerException?.Message); //must throw unique constraint exception
+            var result = await service.AddResultAsync(take.Id);
+
+            Assert.Equal(result.MaxPoints, result.Points); //In this case result must be calculated only from correct answers
         }
 
     }

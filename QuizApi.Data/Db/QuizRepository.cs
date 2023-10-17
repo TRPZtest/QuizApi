@@ -37,10 +37,12 @@ namespace QuizApi.Data.Db
             return quiz;
         }
 
-        public async Task<Response[]> GetResponses(long takeId)
+        public async Task<Response[]> GetOldestResponses(long takeId)
         {
             var responses = await _context.Responses.Where(x => x.TakeId == takeId)
                 .Include(x => x.Option)
+                .GroupBy(x => x.OptionId)       
+                    .Select(y => y.OrderBy(x => x.Created).First())
                 .AsNoTracking()
                 .ToArrayAsync();
 

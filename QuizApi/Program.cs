@@ -91,11 +91,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<QuizService>();
 builder.Services.AddScoped<AuthService>();
 
-
-
-
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 
@@ -114,7 +110,5 @@ if (builder.Environment.EnvironmentName == "Container")
 
     DbEnsureCreatedHelper.TryToSeedData((AppDbContext)context);
 }
-
-
 
 app.Run();

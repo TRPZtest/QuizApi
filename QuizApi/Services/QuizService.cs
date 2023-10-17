@@ -46,7 +46,7 @@ namespace QuizApi.Services
             {
                 var innerEx = ex.InnerException;
 
-                if (innerEx?.Message.Contains("UNIQUE") == true) 
+                if (innerEx?.Message.Contains("unique", StringComparison.CurrentCultureIgnoreCase) == true) 
                 {
                     take = await _repository.GetTakeAsync(userId, quizId);
 
@@ -59,6 +59,8 @@ namespace QuizApi.Services
       
         public async Task<int> AddResponsesAsync(Response[] responses)
         {
+            responses.ToList().ForEach(x => x.Created = DateTime.Now);
+
             await _repository.AddResponsesAsync(responses);
             var addedItemsCount = await _repository.SaveChangesAsync();
 
@@ -70,7 +72,7 @@ namespace QuizApi.Services
        
         public async Task<Result> AddResultAsync(long takeId)
         {           
-            var responses = await _repository.GetResponses(takeId);
+            var responses = await _repository.GetOldestResponses(takeId);
             var quiz = await _repository.GetQuizByTakeIdAsync(takeId);
 
             var maxPoint = quiz.Questions.Count();

@@ -9,13 +9,11 @@ public partial class Response
 
     public long TakeId { get; set; }
 
-    public long QuestionId { get; set; }
-
     public long OptionId { get; set; }
 
-    public virtual Option Option { get; set; } = null!;
+    public DateTime Created { get; set; }
 
-    public virtual Question Question { get; set; } = null!;
+    public virtual Option Option { get; set; } = null!;
 
     public virtual Take Take { get; set; } = null!;
 }

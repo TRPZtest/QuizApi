@@ -15,14 +15,15 @@ services:
     ports:
       - 8080:80
     environment:
-      - ASPNETCORE_ENVIRONMENT=Conteiner 
+      - ASPNETCORE_ENVIRONMENT=Container 
+   
   db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     ports:
       - "1433:1433"
 
     environment:
-        SA_PASSWORD: "SA_PASSWORD"
+        SA_PASSWORD: "S3cur3P@ssW0rd!"
         ACCEPT_EULA: "Y"
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

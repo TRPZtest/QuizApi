@@ -8,13 +8,11 @@ public partial class AppDbContext : DbContext
 {
     public AppDbContext()
     {
-   
     }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
     }
 
     public virtual DbSet<Option> Options { get; set; }
@@ -31,15 +29,11 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:prettytestdb.database.windows.net,1433;Initial Catalog=PrettyDbTest;Persist Security Info=False;User ID=adminTest;Password=Password123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Option>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC0773D8D843");
+            entity.HasKey(e => e.Id).HasName("PK__Options__3214EC0719493382");
 
             entity.Property(e => e.AnswerText)
                 .HasMaxLength(300)
@@ -48,12 +42,12 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Question).WithMany(p => p.Options)
                 .HasForeignKey(d => d.QuestionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Options__Questio__188C8DD6");
+                .HasConstraintName("FK__Options__Questio__51900108");
         });
 
         modelBuilder.Entity<Question>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07042E212B");
+            entity.HasKey(e => e.Id).HasName("PK__Question__3214EC07C0006D02");
 
             entity.Property(e => e.QuestionText)
                 .HasMaxLength(400)
@@ -62,12 +56,12 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Quiz).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.QuizId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Questions__QuizI__10EB6C0E");
+                .HasConstraintName("FK__Questions__QuizI__49EEDF40");
         });
 
         modelBuilder.Entity<Quiz>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Quizzes__3214EC07A0F9A8E7");
+            entity.HasKey(e => e.Id).HasName("PK__Quizzes__3214EC07F4AEF36F");
 
             entity.Property(e => e.Name)
                 .HasMaxLength(36)
@@ -76,58 +70,53 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Response>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Response__3214EC07B3BD307C");
+            entity.HasKey(e => e.Id).HasName("PK__Response__3214EC0788149D61");
 
-            entity.HasIndex(e => new { e.TakeId, e.QuestionId }, "QuestionTakeUnique").IsUnique();
+            entity.Property(e => e.Created).HasColumnType("datetime");
 
             entity.HasOne(d => d.Option).WithMany(p => p.Responses)
                 .HasForeignKey(d => d.OptionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Responses__Optio__1E45672C");
-
-            entity.HasOne(d => d.Question).WithMany(p => p.Responses)
-                .HasForeignKey(d => d.QuestionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Responses__Quest__1D5142F3");
+                .HasConstraintName("FK__Responses__Optio__556091EC");
 
             entity.HasOne(d => d.Take).WithMany(p => p.Responses)
                 .HasForeignKey(d => d.TakeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Responses__TakeI__1C5D1EBA");
+                .HasConstraintName("FK__Responses__TakeI__546C6DB3");
         });
 
         modelBuilder.Entity<Result>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Results__3214EC072480BAFE");
+            entity.HasKey(e => e.Id).HasName("PK__Results__3214EC077B27F6C9");
 
-            entity.HasIndex(e => e.TakeId, "UQ__Results__AC0C21A110FD19E5").IsUnique();
+            entity.HasIndex(e => e.TakeId, "UQ__Results__AC0C21A1471718BA").IsUnique();
 
             entity.HasOne(d => d.Take).WithOne(p => p.Result)
                 .HasForeignKey<Result>(d => d.TakeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Results__TakeId__2215F810");
+                .HasConstraintName("FK__Results__TakeId__593122D0");
         });
 
         modelBuilder.Entity<Take>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Takes__3214EC07444A4E14");
+            entity.HasKey(e => e.Id).HasName("PK__Takes__3214EC074AB4FDBF");
 
             entity.HasIndex(e => new { e.UserId, e.QuizId }, "Take").IsUnique();
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.Takes)
                 .HasForeignKey(d => d.QuizId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Takes__QuizId__15B0212B");
+                .HasConstraintName("FK__Takes__QuizId__4EB3945D");
 
             entity.HasOne(d => d.User).WithMany(p => p.Takes)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Takes__UserId__14BBFCF2");
+                .HasConstraintName("FK__Takes__UserId__4DBF7024");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07914C830C");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC071C911DDB");
 
             entity.HasIndex(e => new { e.Login, e.Password }, "LoginPassword").IsUnique();
 
@@ -144,14 +133,14 @@ public partial class AppDbContext : DbContext
                     r => r.HasOne<Quiz>().WithMany()
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__UsersToQu__QuizI__0E0EFF63"),
+                        .HasConstraintName("FK__UsersToQu__QuizI__47127295"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__UsersToQu__UserI__0D1ADB2A"),
+                        .HasConstraintName("FK__UsersToQu__UserI__461E4E5C"),
                     j =>
                     {
-                        j.HasKey("UserId", "QuizId").HasName("PK__UsersToQ__EF3CE6A4B55D9C29");
+                        j.HasKey("UserId", "QuizId").HasName("PK__UsersToQ__EF3CE6A478FE1C19");
                         j.ToTable("UsersToQuizes");
                     });
         });
