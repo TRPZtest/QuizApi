@@ -5,8 +5,8 @@ this is my implementation of Quiz site. <br />
 To run this application, you need to have Docker installed. In the solution folder, use the following command: <br>
 &emsp make run.
 Or: 
-&emsp docker compose down
-&emsp	docker compose up --build
+&emsp; docker compose down
+&emsp;	docker compose up --build
 in Windows
 
 &emsp http://localhost:3000/ - react client <br />
