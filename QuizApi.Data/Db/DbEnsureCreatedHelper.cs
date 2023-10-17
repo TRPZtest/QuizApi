@@ -69,8 +69,8 @@ namespace QuizApi.Data.Db
                 new Option { IsCorrect = false, AnswerText = "Using add() function", QuestionId = 4 },
                 new Option { IsCorrect = false, AnswerText = "Using append() function", QuestionId = 4 },
                 new Option { IsCorrect = false, AnswerText = "Strings", QuestionId = 5 },
-                new Option { IsCorrect = true, AnswerText = "Arrays", QuestionId = 5 },
-                new Option { IsCorrect = false, AnswerText = "Objects", QuestionId = 5 },
+                new Option { IsCorrect = false, AnswerText = "Arrays", QuestionId = 5 },
+                new Option { IsCorrect = true, AnswerText = "Objects", QuestionId = 5 },
                 new Option { IsCorrect = false, AnswerText = "Resources", QuestionId = 5 }
             );
             context.SaveChanges();
