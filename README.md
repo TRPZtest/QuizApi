@@ -3,10 +3,10 @@
 Hello! <br />
 this is my implementation of Quiz site. <br />
 To run this application, you need to have Docker installed. In the solution folder, use the following command: <br>
-make run.
+make run. <br />
 Or: 
  - docker compose down
- - docker compose up --build
+ - docker compose up --build <br />
 in Windows
 <br />
 Application links:
