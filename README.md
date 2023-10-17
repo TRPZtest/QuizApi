@@ -3,14 +3,14 @@
 Hello! <br />
 this is my implementation of Quiz site. <br />
 To run this application, you need to have Docker installed. In the solution folder, use the following command: <br>
-&emsp make run.
+make run.
 Or: 
-&emsp; docker compose down
-&emsp;	docker compose up --build
+docker compose down
+docker compose up --build
 in Windows
 
-&emsp http://localhost:3000/ - react client <br />
-&emsp http://localhost:8080/swagger/ - swagger 
+http://localhost:3000/ - react client <br />
+http://localhost:8080/swagger/ - swagger 
 
 Also there are some unit tests that using SQLite in memory. <br />
 To test application use these credentials: <br />
